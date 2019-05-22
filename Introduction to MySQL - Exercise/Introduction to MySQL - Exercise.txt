@@ -1,0 +1,276 @@
+1.	Create Database
+
+CREATE TABLE `minions` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NULL DEFAULT NULL,
+	`age` INT(11) NULL DEFAULT NULL,
+	`town_id` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+CREATE TABLE `towns` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+===
+
+2.	Insert Records in Both Tables
+
+INSERT INTO `towns` (`id`,`name`) 
+VALUES 
+(1,'Sofia'),
+(2,'Plovdiv'),
+(3,'Varna')
+;
+
+INSERT INTO `minions` (`id`,`name`, `age`, `town_id`) 
+VALUES 
+(1,'Kevin', '22', '1'),
+(2,'Bob', '15', '3'),
+(3,'Steward', NULL, '2')
+;
+
+===
+
+3.	Truncate Table Minions
+
+DELETE FROM `minions` 
+
+===
+
+4.	Drop All Tables
+
+DROP TABLE IF EXISTS `minions`;
+DROP TABLE IF EXISTS `towns`;
+
+===
+
+5.	*Create Table People
+
+CREATE TABLE `people` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(200) NOT NULL DEFAULT 0,
+	`picture` MEDIUMBLOB  NULL,
+	`height` DOUBLE NULL DEFAULT NULL,
+	`weight` DOUBLE NULL DEFAULT NULL,
+	`gender` CHAR(1) NOT NULL DEFAULT 0,
+	`birthdate` INT(11) NOT NULL DEFAULT 0,
+	`biography` LONGTEXT,
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+INSERT INTO `people` (`id`,`name`, `picture`, `height`,`weight`,`gender`,`birthdate`,`biography`) 
+VALUES 
+(1,'Kevin', '15', '1', '18', 'm', 1997-1-22, 'abv'),
+(2,'Bob', '15', '3', '32', 'f', 1997-1-22, 'abv'),
+(3,'Steward', '15', '2', '68', 'm', 1997-1-22, 'abv'),
+(4,'Pesho', '15', '7', '3', 'f', 1997-1-22, 'abv'),
+(5,'Gosho', '15', '20', '175', 'm', 1997-1-22, 'abv')
+;
+
+===
+
+6.	*Create Table Users
+
+CREATE TABLE `users` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`username` CHAR(30) NOT NULL DEFAULT 0,
+	`password` CHAR(26) NOT NULL DEFAULT 0,
+	`profile_picture` BLOB(900)  NULL,
+	`last_login_time` DATETIME,
+	`is_deleted` CHAR(5) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+INSERT INTO `users` (`id`,`username`, `password`, `profile_picture`,`last_login_time`,`is_deleted`) 
+VALUES 
+(1,'Kevin', 'sdaddd', '10', '2019-05-21 10:54:28', 'true'),
+(2,'Bob', '0asdsad', 0x617364, '2019-05-21 10:54:28', 'true'),
+(3,'Steward', 'djfi', '20', '2019-05-21 10:54:28', 'true'),
+(4,'Pesho', 'adsfdf', '70', '2019-05-21 10:54:28', 'true'),
+(5,'Gosho', 'dsvfdd', '20', '2019-05-21 10:54:28', 'true')
+;
+
+
+===
+
+7.	*Change Primary Key
+
+ALTER TABLE `users`
+MODIFY `id` INT, 
+DROP PRIMARY KEY, 
+ADD PRIMARY KEY (id,username);
+
+===
+
+8.Find All Information About Departments
+
+SELECT * FROM `departments`
+ORDER BY `department_id`
+
+===
+
+9.Find all Department Names
+
+SELECT `name` FROM `departments`
+ORDER BY `department_id`
+
+===
+
+10.Find salary of Each Employee
+
+SELECT `first_name`,`last_name`,`salary` FROM `employees`
+ORDER BY `employee_id`
+
+===
+
+11.Find Full Name of Each Employee
+
+SELECT `first_name`,`middle_name`,`last_name` FROM `employees`
+ORDER BY `employee_id`
+
+===
+
+12.Find Email Address of Each Employee
+
+SELECT CONCAT(`first_name`,'.',`last_name`,'@softuni.bg') AS full_email_address   FROM `employees`
+
+===
+
+13.Find All Different Employee’s Salaries
+
+SELECT DISTINCT(`salary`) FROM `employees`
+ORDER BY `salary` ASC
+
+===
+
+14.Find all Information About Employees
+
+SELECT * FROM `employees`
+WHERE `job_title`='Sales Representative'
+ORDER BY `employee_id`
+
+===
+
+15.Find Names of All Employees by salary in Range
+
+SELECT `first_name`,`last_name`,`job_title` FROM `employees`
+WHERE `salary` BETWEEN 20000 AND 30000
+ORDER BY `employee_id`
+
+===
+
+16. Find Names of All Employees 
+
+SELECT CONCAT(`first_name`," ",`middle_name`, " " ,`last_name`) AS `full_name` FROM `employees`
+WHERE `salary` IN (25000, 14000, 12500,23600) 
+
+===
+
+17.Find All Employees Without Manager
+
+SELECT `first_name` ,`last_name` FROM `employees`
+WHERE `manager_id` IS NULL
+
+===
+
+18.Find All Employees with salary More Than 50000
+
+SELECT `first_name` ,`last_name`, `salary` FROM `employees`
+WHERE `salary`> 50000
+ORDER BY `salary` DESC
+
+===
+
+19.Find 5 Best Paid Employees
+
+SELECT `first_name` ,`last_name` FROM `employees`
+ORDER BY `salary` DESC
+LIMIT 5
+
+===
+
+20.Find All Employees Except Marketing
+
+SELECT `first_name` ,`last_name` FROM `employees`
+WHERE `department_id` !=4
+
+===
+
+21.Sort Employees Table
+
+SELECT * FROM `employees`
+ORDER BY `salary` DESC, `first_name` ASC, `last_name` DESC, `middle_name` ASC, `employee_id`
+
+===
+
+22.Distinct Job Titles
+
+SELECT DISTINCT(`job_title`) FROM `employees`
+ORDER BY `job_title` 
+
+===
+
+23.Find First 10 Started Projects
+
+SELECT * FROM `projects`
+ORDER BY `start_date`, `name`
+LIMIT	10 
+
+===
+
+24. Last 7 Hired Employees
+
+SELECT `first_name`,`last_name`,hire_date FROM `employees`
+ORDER BY `hire_date` DESC
+LIMIT	7
+
+===
+
+25.*Increase Salaries
+
+UPDATE `employees`
+SET `salary`=`salary`*1.12 
+WHERE `department_id` IN(1,2,4,11);
+SELECT `salary` FROM `employees`
+
+===
+
+26. All Mountain Peaks
+
+SELECT `peak_name` FROM `peaks`
+ORDER BY `peak_name`
+
+===
+
+27. Biggest Countries by Population
+
+SELECT `country_name`,`population` FROM `countries` 
+WHERE `continent_code`='EU'
+ORDER BY `population` DESC,`country_name` ASC
+LIMIT 30
+
+===
+
+28. *Countries and Currency (Euro / Not Euro)
+
+SELECT `country_name`,`country_code`, 
+IF (`currency_code`='EUR','Euro','Not Euro') AS `currency`
+ FROM `countries` 
+ORDER BY `country_name` ASC
+
+===
+
