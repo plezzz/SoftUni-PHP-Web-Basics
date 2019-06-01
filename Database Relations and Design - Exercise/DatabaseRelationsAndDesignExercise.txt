@@ -1,0 +1,212 @@
+Problem 1. Records’ Count
+
+SELECT 
+COUNT(id) AS count
+FROM
+wizzard_deposits
+
+===
+
+Problem 2. Longest Magic Wand
+
+SELECT 
+MAX(magic_wand_size) AS longest_magic_wand
+FROM
+wizzard_deposits
+
+===
+
+Problem 3. Longest Magic Wand per Deposit Groups
+
+SELECT
+deposit_group,
+MAX(magic_wand_size) AS longest_magic_wand
+FROM
+wizzard_deposits
+GROUP BY 
+deposit_group
+ORDER BY
+longest_magic_wand,
+deposit_group
+
+
+===
+
+Problem 4.* Smallest Deposit Group per Magic Wand Size
+
+SELECT
+deposit_group
+FROM
+(SELECT
+deposit_group,
+MIN(magic_wand_size) AS longest_magic_wand
+FROM
+wizzard_deposits)A1
+
+
+===
+
+Problem 5. Deposits Sum
+
+SELECT
+deposit_group,
+SUM(deposit_amount) AS total_sum
+FROM
+wizzard_deposits
+GROUP BY 
+deposit_group
+ORDER BY
+total_sum
+
+===
+
+Problem 6. Appetizers Count
+
+SELECT
+COUNT(category_id)
+FROM
+products
+WHERE
+price>8 AND category_id=2
+GROUP BY 
+category_id
+
+===
+
+Problem 7. Menu Prices
+
+SELECT
+category_id,
+ROUND(AVG(price),2) AS `Average Price`,
+ROUND(MIN(price),2) AS `Cheapest Product`, 
+ROUND(MAX(price),2) AS `Most Expensive Product`
+FROM
+products
+GROUP BY 
+category_id
+
+===
+
+Problem 8. Employee Address
+
+SELECT 
+   employee_id,
+   job_title,
+   e.address_id,
+   a.address_text
+FROM 
+	employees AS e
+JOIN 
+	addresses AS a 
+ON 
+	e.address_id = a.address_id
+	ORDER BY
+	address_id
+	LIMIT 5
+
+===
+
+Problem 9. Employee Departments
+
+SELECT 
+   employee_id,
+	first_name,
+	salary,
+   d.NAME AS department_name
+FROM 
+	employees AS e
+
+JOIN
+ departments AS d 
+ON
+	e.department_id = d.department_id
+WHERE		
+salary > 15000
+ORDER BY
+	d.department_id DESC
+	LIMIT 5;
+
+===
+
+Problem 10. Employees Without Project
+
+SELECT  
+e.employee_id, 
+e.first_name
+FROM 
+	employees as e
+LEFT OUTER JOIN   
+	employees_projects as ep
+ON 
+	e.employee_id = ep.employee_id
+WHERE 
+	ep.employee_id is null
+ORDER BY
+	e.employee_id DESC
+LIMIT 3;
+
+===
+
+Problem 11. *Employee 24
+
+SELECT 
+	e.employee_id, 
+	e.first_name, 
+	p.name AS project_name
+FROM employees AS e
+INNER JOIN employees_projects AS ep
+	ON e.employee_id = ep.employee_id
+LEFT OUTER JOIN projects AS p
+	ON ep.project_id = p.project_id
+AND 
+	p.start_date < '20050101'
+WHERE 
+	e.employee_id = 24
+ORDER BY
+	project_name
+
+===
+
+Problem 12. *Employee Manager
+
+SELECT 
+   e.employee_id,
+   e.first_name,
+   e.manager_id,
+   a.first_name
+FROM 
+	employees AS e
+JOIN 
+	employees AS a 
+ON 
+	e.manager_id = a.employee_id
+WHERE 
+	e.manager_id=3 OR e.manager_id=7
+ORDER BY
+e.first_name
+
+===
+
+Problem 13. *Employee Summary
+
+SELECT
+   e.employee_id,
+   CONCAT( e.first_name,' ',e.last_name) AS employee_name,
+   CONCAT( a.first_name,' ',a.last_name) AS manager_name,
+   d.NAME AS department_name
+FROM 
+	employees AS e
+JOIN 
+	employees AS a 
+ON 
+	e.manager_id = a.employee_id
+JOIN departments AS d
+ON
+	e.department_id = d.department_id
+WHERE
+e.manager_id IS NOT NULL
+ORDER BY
+e.employee_id
+LIMIT 5;
+
+===
